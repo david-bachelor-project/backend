@@ -1,0 +1,31 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - yum install -y openssh-clients
+
+  pre_build:
+    commands:
+      - echo "$sshkey" > /tmp/key.pem
+      - chmod 600 /tmp/key.pem
+      - echo "IP $ec2ip"
+      - cat /tmp/key.pem
+
+  build:
+    commands:
+      - mvn -B package
+
+  post_build:
+    commands:
+      - scp -o StrictHostKeyChecking=no -i /tmp/key.pem target/*.jar admin@$ec2ip:/opt/backend/app.jar
+      - scp -o StrictHostKeyChecking=no -i /tmp/key.pem Dockerfile admin@$ec2ip:/opt/backend/Dockerfile
+      - |
+        ssh -o StrictHostKeyChecking=no -i /tmp/key.pem admin@$ec2ip "
+          cd /opt/backend &&
+          docker build -t backend-app . &&
+          docker rm -f backend-app || true &&
+          docker run -d --name backend-app --network host backend-app
+        "
