@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: paperless-backend
+  labels:
+    app: paperless-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless-backend
+  template:
+    metadata:
+      labels:
+        app: paperless-backend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-creds
+      containers:
+        - name: backend
+          image: ghcr.io/david-bachelor-project/backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8083
+          envFrom:
+            - configMapRef:
+                name: paperless-backend-config
