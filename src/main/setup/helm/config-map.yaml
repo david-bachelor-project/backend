@@ -4,7 +4,7 @@ metadata:
   name: paperless-backend-config
 data:
   CORS_ORIGINS: "http://frontend.local.meow"
-  KAFKA_BOOTSTRAP_SERVER: "kafka.paperless.svc.cluster.local:9092"
+  KAFKA_BOOTSTRAP_SERVER: "redpanda.kafka.svc.cluster.local:9092"
   KAFKA_GROUP: "paperless-group"
   OCR_TOPIC: "ocr-queue"
 
