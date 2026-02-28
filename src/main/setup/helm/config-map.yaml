@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: paperless-backend-config
 data:
-  CORS_ORIGINS: "http://frontend.local.meow"
+  CORS_ORIGINS: "http://paperless-frontend.paperless.svc.cluster.local:8085"
   KAFKA_BOOTSTRAP_SERVER: "redpanda.kafka.svc.cluster.local:9092"
   KAFKA_GROUP: "paperless-group"
   OCR_TOPIC: "ocr-queue"
@@ -17,4 +17,4 @@ data:
   MINIO_SECRET_KEY: "admin123"
   MINIO_BUCKET: "documents"
 
-  ELASTIC_URL: "http://elasticsearch.paperless.svc.cluster.local:9200"
+  ELASTIC_URL: "http://elastic.elastic.svc.cluster.local:9200"
